@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>珍北平 · 營運中心</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+      background: #f5f0eb;
+      min-height: 100vh;
+      color: #2c1a0e;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #8b3a1a 0%, #c05621 100%);
+      color: white;
+      padding: 28px 24px 24px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    header p {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── Section ── */
+    section { margin-bottom: 32px; }
+    section h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #8b3a1a;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-left: 4px;
+      border-left: 3px solid #c05621;
+      padding-left: 10px;
+    }
+
+    /* ── Card grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .grid.stores {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    /* ── Card ── */
+    a.card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px 12px;
+      background: white;
+      border-radius: 14px;
+      text-decoration: none;
+      color: #2c1a0e;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: center;
+    }
+    a.card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(139,58,26,0.15);
+    }
+    a.card:active {
+      transform: translateY(0);
+    }
+
+    .card .icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+    .card .label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .card .sub {
+      font-size: 0.72rem;
+      color: #8b6f5e;
+      line-height: 1.3;
+    }
+
+    /* Store cards (smaller) */
+    .grid.stores a.card {
+      padding: 14px 8px;
+      gap: 6px;
+    }
+    .grid.stores .icon { font-size: 1.4rem; }
+    .grid.stores .label { font-size: 0.82rem; }
+
+    /* Accent colors per section */
+    .overview a.card  { border-top: 3px solid #c05621; }
+    .daily    a.card  { border-top: 3px solid #2d7d46; }
+    .stores   a.card  { border-top: 3px solid #1a5f8b; }
+    .tools    a.card  { border-top: 3px solid #6b4fa0; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.72rem;
+      color: #b09080;
+      padding-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>珍北平餐飲集團</h1>
+  <p>營運管理中心</p>
+</header>
+
+<main>
+
+  <!-- ① 營運總覽 -->
+  <section>
+    <h2>營運總覽</h2>
+    <div class="grid overview">
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=dashboard" target="_blank">
+        <span class="icon">📊</span>
+        <span class="label">戰情室</span>
+        <span class="sub">即時營業總覽</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=monthlyreport" target="_blank">
+        <span class="icon">📋</span>
+        <span class="label">月報</span>
+        <span class="sub">每月營收報告</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ② 日常作業 -->
+  <section>
+    <h2>日常作業</h2>
+    <div class="grid daily">
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec" target="_blank">
+        <span class="icon">💰</span>
+        <span class="label">每日結帳</span>
+        <span class="sub">點鈔表單</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbyw62uVA1H4M1QMGeDhHd59pqDkiMOZhKqEkmHq0oI-hBVpZKHLVNwMDdLq_1izUWMk/exec" target="_blank">
+        <span class="icon">🌙</span>
+        <span class="label">每日打烊紀錄</span>
+        <span class="sub">庫存 &amp; 費用填報</span>
+      </a>
+
+      <a class="card" href="YOUR_SCHEDULE_URL_HERE?page=schedule" target="_blank">
+        <span class="icon">📅</span>
+        <span class="label">員工班表</span>
+        <span class="sub">查看本月排班</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ③ 各店專區 -->
+  <section>
+    <h2>各店戰情室</h2>
+    <div class="grid stores">
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Tp1rDs" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">南郭店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Ym0wFa" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">永安店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Lx9nRw" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">彰南店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Rk7mXp" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">鹿港店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Jd4cKf" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">秀水店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Wn3qYt" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">頂番店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Qa6gVe" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">和美店</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Uf2hMj" target="_blank">
+        <span class="icon">🚐</span>
+        <span class="label">花壇餐車</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Bg5kNc" target="_blank">
+        <span class="icon">🚐</span>
+        <span class="label">大埔餐車</span>
+      </a>
+
+      <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash&key=Hv8bZs" target="_blank">
+        <span class="icon">🏬</span>
+        <span class="label">內新店</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ④ 其他工具 -->
+  <section>
+    <h2>其他工具</h2>
+    <div class="grid tools">
+
+      <a class="card" href="https://weifu0716.github.io/nfc-card/" target="_blank">
+        <span class="icon">💳</span>
+        <span class="label">電子名片</span>
+        <span class="sub">NFC 名片頁面</span>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>珍北平餐飲集團 &copy; 2026</footer>
+
+</body>
+</html>

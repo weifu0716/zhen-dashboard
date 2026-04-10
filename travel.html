@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>旅遊行李清單 · 珍北平</title>
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f0e8;
+      --card: #ffffff;
+      --primary: #3a8fc7;
+      --primary-light: #d6ecf8;
+      --accent: #e8a838;
+      --checked-bg: #d4f0db;
+      --checked-text: #2e7d45;
+      --border: #e0d9ce;
+      --text: #333333;
+      --text-muted: #888888;
+      --danger: #e05252;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* ─── Header ─── */
+    .site-header {
+      background: linear-gradient(135deg, #1a6fa8 0%, #3a8fc7 50%, #5bb3e0 100%);
+      padding: 20px 16px 24px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::before {
+      content: "✈️";
+      font-size: 120px;
+      position: absolute;
+      right: -20px;
+      top: -20px;
+      opacity: 0.08;
+      line-height: 1;
+    }
+    .site-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .site-header p {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+    .back-btn {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.32); }
+
+    /* ─── Controls Bar ─── */
+    .controls-bar {
+      background: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .controls-bar label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    #tripSelect {
+      flex: 1;
+      min-width: 160px;
+      padding: 8px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      background: white;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+    #tripSelect:focus { border-color: var(--primary); }
+
+    .btn-reset {
+      padding: 8px 16px;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .btn-reset:hover { opacity: 0.85; }
+
+    /* ─── Overall Progress ─── */
+    .overall-progress {
+      margin: 16px 16px 0;
+      background: white;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .progress-pct {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .progress-bar-wrap {
+      height: 10px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #5bb3e0);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .progress-count {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* ─── Grid Layout ─── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px 16px;
+    }
+    @media (max-width: 600px) {
+      .categories-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Category Card ─── */
+    .category-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--primary-light);
+      border-bottom: 1px solid var(--border);
+    }
+    .category-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1a5a82;
+    }
+    .category-count {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: white;
+      padding: 2px 8px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    /* Special: 非常重要 ─ full width + red accent */
+    .category-card.important {
+      grid-column: 1 / -1;
+    }
+    .category-card.important .category-header {
+      background: #fde8e8;
+      border-bottom-color: #f9c2c2;
+    }
+    .category-card.important .category-title { color: #9b1c1c; }
+    .category-card.important .category-count { color: var(--danger); }
+    .category-card.important .item-row:not(.checked):hover { background: #fff5f5; }
+
+    /* ─── Item List ─── */
+    .item-list { padding: 6px 0; }
+
+    .item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid #f5f0e8;
+      user-select: none;
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-row:hover { background: var(--primary-light); }
+    .item-row.checked { background: var(--checked-bg); }
+    .item-row.checked:hover { background: #c0e8ca; }
+
+    /* Custom checkbox */
+    .item-row input[type="checkbox"] { display: none; }
+    .custom-check {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border: 2px solid #bbb;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      background: white;
+    }
+    .item-row.checked .custom-check {
+      background: #2e7d45;
+      border-color: #2e7d45;
+    }
+    .custom-check::after {
+      content: "";
+      display: none;
+      width: 5px;
+      height: 9px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    .item-row.checked .custom-check::after { display: block; }
+
+    .item-name {
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: color 0.15s;
+      flex: 1;
+    }
+    .item-row.checked .item-name {
+      color: var(--checked-text);
+      text-decoration: line-through;
+      text-decoration-color: #7cc08c;
+    }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      text-align: center;
+      padding: 24px 16px 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─── -->
+<header class="site-header">
+  <a class="back-btn" href="index.html">← 儀表板</a>
+  <h1>🧳 旅遊行李清單</h1>
+  <p>出發前記得全部打勾！</p>
+</header>
+
+<!-- ─── Controls ─── -->
+<div class="controls-bar">
+  <label for="tripSelect">選擇旅遊版本</label>
+  <select id="tripSelect" onchange="loadTrip()"></select>
+  <button class="btn-reset" onclick="confirmReset()">🔄 重置清單</button>
+</div>
+
+<!-- ─── Overall Progress ─── -->
+<div class="overall-progress">
+  <div class="progress-header">
+    <span class="progress-label">整體進度</span>
+    <span class="progress-pct" id="overallPct">0%</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+  <div class="progress-count" id="overallCount">已確認 0 / 共 0 項</div>
+</div>
+
+<!-- ─── Categories Grid ─── -->
+<main class="categories-grid" id="categoriesGrid"></main>
+
+<!-- ─── Footer ─── -->
+<footer class="site-footer">
+  資料儲存於本機 · 關閉後重開仍保留進度
+</footer>
+
+<!-- ─── Toast ─── -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  資料區 ─ 新增旅遊版本只需在這裡新增一組物件
+// ══════════════════════════════════════════════════
+const TRIP_DATA = [
+  {
+    id: "japan-okinawa",
+    label: "🇯🇵 日本沖繩",
+    categories: [
+      {
+        id: "important",
+        title: "🚨 非常重要",
+        note: "上車前務必檢查一次",
+        important: true,
+        items: ["護照", "駕照", "日本譯本", "日幣", "信用卡×2"]
+      },
+      {
+        id: "electronics",
+        title: "📱 電子用品",
+        items: ["充電線", "充電頭", "行動電源", "iPad", "風扇×2"]
+      },
+      {
+        id: "kids",
+        title: "👶 小孩用品",
+        items: ["衣服4套", "尿布×64", "玩水尿布", "沐浴用品", "襪子4雙", "牙刷", "水壺", "浴巾", "泡奶用品"]
+      },
+      {
+        id: "adults",
+        title: "🧑 大人用品",
+        items: ["衣服3套", "化妝品", "卸妝用品", "沐浴用品", "襪子3雙", "牙刷", "水壺", "浴巾", "洗衣用品"]
+      },
+      {
+        id: "car",
+        title: "🚗 車上用品",
+        items: ["餅乾", "飲料", "畫畫本", "畫筆", "車車", "垃圾袋"]
+      },
+      {
+        id: "outdoor",
+        title: "🌸 外出用品",
+        items: ["圍兜", "清潔用品", "吃飯工具", "濕紙巾", "衛生紙", "防曬用品", "防蚊用品"]
+      },
+      {
+        id: "misc",
+        title: "🎒 其他用品",
+        items: ["推車", "備用藥", "傘", "護墊", "手提袋", "壓縮工具", "綁頭髮", "外套"]
+      }
+    ]
+  }
+
+  // ── 新增其他版本請在這裡加，格式參考 README.md ──
+];
+
+// ══════════════════════════════════════════════════
+//  App 邏輯
+// ══════════════════════════════════════════════════
+let currentTripId = null;
+let checkedState = {};
+
+function init() {
+  const sel = document.getElementById("tripSelect");
+  TRIP_DATA.forEach(trip => {
+    const opt = document.createElement("option");
+    opt.value = trip.id;
+    opt.textContent = trip.label;
+    sel.appendChild(opt);
+  });
+  const savedTrip = localStorage.getItem("lastTripId");
+  if (savedTrip && TRIP_DATA.find(t => t.id === savedTrip)) sel.value = savedTrip;
+  loadTrip();
+}
+
+function loadTrip() {
+  const tripId = document.getElementById("tripSelect").value;
+  currentTripId = tripId;
+  localStorage.setItem("lastTripId", tripId);
+  const saved = localStorage.getItem("checklist_" + tripId);
+  checkedState = saved ? JSON.parse(saved) : {};
+  renderCategories();
+  updateOverallProgress();
+}
+
+function renderCategories() {
+  const trip = TRIP_DATA.find(t => t.id === currentTripId);
+  if (!trip) return;
+  const grid = document.getElementById("categoriesGrid");
+  grid.innerHTML = "";
+  trip.categories.forEach(cat => {
+    const card = document.createElement("div");
+    card.className = "category-card" + (cat.important ? " important" : "");
+    const checkedCount = cat.items.filter(item => checkedState[itemKey(cat.id, item)]).length;
+    card.innerHTML = `
+      <div class="category-header">
+        <span class="category-title">${cat.title}${cat.note ? `<br><small style="font-weight:400;font-size:0.72rem;opacity:0.7">${cat.note}</small>` : ""}</span>
+        <span class="category-count" id="count-${cat.id}">${checkedCount} / ${cat.items.length}</span>
+      </div>
+      <div class="item-list" id="list-${cat.id}"></div>
+    `;
+    const list = card.querySelector(`#list-${cat.id}`);
+    cat.items.forEach(item => {
+      const key = itemKey(cat.id, item);
+      const isChecked = !!checkedState[key];
+      const row = document.createElement("div");
+      row.className = "item-row" + (isChecked ? " checked" : "");
+      row.dataset.key = key;
+      row.dataset.catId = cat.id;
+      row.innerHTML = `<div class="custom-check"></div><span class="item-name">${item}</span>`;
+      row.addEventListener("click", () => toggleItem(row, cat.id));
+      list.appendChild(row);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function toggleItem(row, catId) {
+  const key = row.dataset.key;
+  checkedState[key] = !checkedState[key];
+  row.classList.toggle("checked", checkedState[key]);
+  saveState();
+  updateCategoryCount(catId);
+  updateOverallProgress();
+}
+
+function updateCategoryCount(catId) {
+  const trip = TRIP_DATA.find(t => t.id === currentTripId);
+  const cat = trip.categories.find(c => c.id === catId);
+  const checkedCount = cat.items.filter(item => checkedState[itemKey(catId, item)]).length;
+  const el = document.getElementById("count-" + catId);
+  if (el) el.textContent = checkedCount + " / " + cat.items.length;
+}
+
+function updateOverallProgress() {
+  const trip = TRIP_DATA.find(t => t.id === currentTripId);
+  if (!trip) return;
+  let total = 0, checked = 0;
+  trip.categories.forEach(cat => {
+    total += cat.items.length;
+    checked += cat.items.filter(item => checkedState[itemKey(cat.id, item)]).length;
+  });
+  const pct = total === 0 ? 0 : Math.round(checked / total * 100);
+  document.getElementById("overallPct").textContent = pct + "%";
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("overallCount").textContent = `已確認 ${checked} / 共 ${total} 項`;
+}
+
+function confirmReset() {
+  if (confirm("確定要清除所有勾選嗎？\n（下次旅遊重新開始）")) {
+    checkedState = {};
+    saveState();
+    renderCategories();
+    updateOverallProgress();
+    showToast("✅ 已重置，準備好迎接下一次旅行！");
+  }
+}
+
+function saveState() {
+  localStorage.setItem("checklist_" + currentTripId, JSON.stringify(checkedState));
+}
+
+function itemKey(catId, itemName) {
+  return catId + "::" + itemName;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+init();
+</script>
+</body>
+</html>

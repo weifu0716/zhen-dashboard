@@ -118,6 +118,20 @@
     .private  a.card  { border-top: 3px solid #6b4fa0; }
     .tools    a.card  { border-top: 3px solid #6b4fa0; }
 
+    /* 可折疊區塊 */
+    .collapsible-header {
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none;
+    }
+    .collapsible-header h2 { margin-bottom: 0; border-left: 3px solid #6b4fa0; }
+    .collapse-btn {
+      font-size: 0.72rem; color: #8b6f5e; background: none; border: 1px solid #c9b09a;
+      border-radius: 50px; padding: 3px 12px; cursor: pointer; font-weight: 600;
+      white-space: nowrap;
+    }
+    .collapsible-content { display: none; margin-top: 12px; }
+    .collapsible-content.open { display: block; }
+
     /* Footer */
     footer {
       text-align: center;
@@ -254,7 +268,11 @@
 
   <!-- ④ 店長戰情室（南郭/永安 趴數版 + 其他 8 間有數字版） -->
   <section>
-    <h2>店長戰情室</h2>
+    <div class="collapsible-header" onclick="toggleStoreManager()">
+      <h2>店長戰情室</h2>
+      <button class="collapse-btn" id="storeManagerBtn">展開</button>
+    </div>
+    <div class="collapsible-content" id="storeManagerContent">
     <div class="grid private">
 
       <a class="card" href="https://script.google.com/macros/s/AKfycbwKVgbStamOsVzGSmlGtSULhPo9AY9J21UhgMzcyyTZPtaKVTDgP_xiHVIVd-FFsJvFLQ/exec?page=storedash-private&key=Tp1rDs" target="_blank">
@@ -308,6 +326,7 @@
       </a>
 
     </div>
+    </div><!-- end collapsible-content -->
   </section>
 
   <!-- ⑤ 其他工具 -->
@@ -334,5 +353,14 @@
 
 <footer>珍北平餐飲集團 &copy; 2026</footer>
 
+<script>
+  function toggleStoreManager() {
+    var content = document.getElementById('storeManagerContent');
+    var btn = document.getElementById('storeManagerBtn');
+    var isOpen = content.classList.contains('open');
+    content.classList.toggle('open', !isOpen);
+    btn.textContent = isOpen ? '展開' : '收合';
+  }
+</script>
 </body>
 </html>

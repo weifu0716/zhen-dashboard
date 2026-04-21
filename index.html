@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>珍北平 · 營運中心</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#8b3a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="營運中心">
+  <link rel="apple-touch-icon" href="maskable_icon_x192.png">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -366,6 +374,13 @@
     var isOpen = content.classList.contains('open');
     content.classList.toggle('open', !isOpen);
     btn.textContent = isOpen ? '展開' : '收合';
+  }
+
+  // 註冊 Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
   }
 </script>
 </body>

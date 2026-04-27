@@ -1,6 +1,6 @@
 // 珍北平營運中心 Service Worker
 // 改版時記得更新 CACHE_VERSION，手機上的舊 SW 才會自動更新
-const CACHE_VERSION = 'zhen-dashboard-v1';
+const CACHE_VERSION = 'zhen-dashboard-v2';
 
 const CORE_ASSETS = [
   './',
